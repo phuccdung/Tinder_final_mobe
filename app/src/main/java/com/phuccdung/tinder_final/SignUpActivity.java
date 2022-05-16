@@ -9,15 +9,20 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
-    private EditText eEmail,ePassword,eConfirm;
+    private EditText eEmail,ePassword,eConfirm,mName;
+    private RadioGroup mRadioSex;
     private Button btnSignUp;
     private ProgressDialog progressDialog;
     @Override
@@ -50,8 +55,16 @@ public class SignUpActivity extends AppCompatActivity {
 
     private void onClickSignUp() {
         FirebaseAuth mAuth=FirebaseAuth.getInstance();
-        String email=eEmail.getText().toString().trim();
-        String password=ePassword.getText().toString().trim();
+     final    String email=eEmail.getText().toString().trim();
+      final   String password=ePassword.getText().toString().trim();
+        final   String name=mName.getText().toString();
+
+        int selectId=mRadioSex.getCheckedRadioButtonId();
+        final RadioButton radioButton=(RadioButton) findViewById(selectId);
+        if(radioButton.getText()==null){
+            return;
+        }
+
         progressDialog.show();
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
@@ -60,6 +73,9 @@ public class SignUpActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
+                            String userId=mAuth.getCurrentUser().getUid();
+                            DatabaseReference currentUserDb= FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
+                            currentUserDb.setValue(name);
                             Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
                             startActivity(intent);
                             finishAffinity();
@@ -79,5 +95,7 @@ public class SignUpActivity extends AppCompatActivity {
         ePassword=findViewById(R.id.edit_password);
         eConfirm=findViewById(R.id.edit_confirm);
         btnSignUp=findViewById(R.id.btn_sign_up);
+        mName=findViewById(R.id.name);
+        mRadioSex=findViewById(R.id.radio_sex);
     }
 }
