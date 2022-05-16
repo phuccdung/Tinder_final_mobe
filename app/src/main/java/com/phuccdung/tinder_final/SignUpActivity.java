@@ -21,10 +21,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 public class SignUpActivity extends AppCompatActivity {
-    private EditText eEmail,ePassword,eConfirm,mName;
+    private EditText eEmail, ePassword, eConfirm, mName;
     private RadioGroup mRadioSex;
     private Button btnSignUp;
     private ProgressDialog progressDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,13 +39,13 @@ public class SignUpActivity extends AppCompatActivity {
         btnSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String password=ePassword.getText().toString();
-                String confirm=eConfirm.getText().toString();
-                if(password.equals(confirm)){
+                String password = ePassword.getText().toString();
+                String confirm = eConfirm.getText().toString();
+                if (password.equals(confirm)) {
                     onClickSignUp();
 
 
-                }else{
+                } else {
 
                     Toast.makeText(SignUpActivity.this, "Password don't same!",
                             Toast.LENGTH_SHORT).show();
@@ -54,14 +55,14 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void onClickSignUp() {
-        FirebaseAuth mAuth=FirebaseAuth.getInstance();
-     final    String email=eEmail.getText().toString().trim();
-      final   String password=ePassword.getText().toString().trim();
-        final   String name=mName.getText().toString();
+        FirebaseAuth mAuth = FirebaseAuth.getInstance();
+        final String email = eEmail.getText().toString().trim();
+        final String password = ePassword.getText().toString().trim();
+        final String name = mName.getText().toString();
 
-        int selectId=mRadioSex.getCheckedRadioButtonId();
-        final RadioButton radioButton=(RadioButton) findViewById(selectId);
-        if(radioButton.getText()==null){
+        int selectId = mRadioSex.getCheckedRadioButtonId();
+        final RadioButton radioButton = (RadioButton) findViewById(selectId);
+        if (radioButton.getText() == null) {
             return;
         }
 
@@ -73,10 +74,10 @@ public class SignUpActivity extends AppCompatActivity {
                         progressDialog.dismiss();
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            String userId=mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDb= FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
+                            String userId = mAuth.getCurrentUser().getUid();
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
                             currentUserDb.setValue(name);
-                            Intent intent = new Intent(SignUpActivity.this,MainActivity.class);
+                            Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(intent);
                             finishAffinity();
                         } else {
@@ -90,12 +91,12 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void intiUi() {
-        progressDialog=new ProgressDialog(this);
-        eEmail=findViewById(R.id.edit_email);
-        ePassword=findViewById(R.id.edit_password);
-        eConfirm=findViewById(R.id.edit_confirm);
-        btnSignUp=findViewById(R.id.btn_sign_up);
-        mName=findViewById(R.id.name);
-        mRadioSex=findViewById(R.id.radio_sex);
+        progressDialog = new ProgressDialog(this);
+        eEmail = findViewById(R.id.edit_email);
+        ePassword = findViewById(R.id.edit_password);
+        eConfirm = findViewById(R.id.edit_confirm);
+        btnSignUp = findViewById(R.id.btn_sign_up);
+        mName = findViewById(R.id.name);
+        mRadioSex = findViewById(R.id.radio_sex);
     }
 }
