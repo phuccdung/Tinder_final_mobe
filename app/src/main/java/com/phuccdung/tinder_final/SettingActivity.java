@@ -142,7 +142,7 @@ public class SettingActivity extends AppCompatActivity {
                     }
                     if (map.get("profileImageUrl") != null) {
                         proImage = map.get("profileImageUrl").toString();
-                        Glide.with(getApplication()).load(proImage).into(mProImage);
+                        Glide.with(getApplication()).load(proImage).error(R.mipmap.ic_launcher).into(mProImage);
                     }
                 }
             }

@@ -20,6 +20,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class SignUpActivity extends AppCompatActivity {
     private EditText eEmail, ePassword, eConfirm, mName;
     private RadioGroup mRadioSex;
@@ -75,8 +78,11 @@ public class SignUpActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             String userId = mAuth.getCurrentUser().getUid();
-                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId).child("name");
-                            currentUserDb.setValue(name);
+                            DatabaseReference currentUserDb = FirebaseDatabase.getInstance().getReference().child("Users").child(radioButton.getText().toString()).child(userId);
+                            Map userInfo=new HashMap<>();
+    userInfo.put("name",name);
+    userInfo.put("profileImageUrl","default");
+                            currentUserDb.updateChildren(userInfo);
                             Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
                             startActivity(intent);
                             finishAffinity();
