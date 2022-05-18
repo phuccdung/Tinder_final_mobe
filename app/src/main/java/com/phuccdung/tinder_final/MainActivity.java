@@ -28,10 +28,12 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
+
+    public   static  final int MY_REQUEST_CODE=10;
     private cards cards_data[];
     private arrayAdapter arrayAdapter;
     private int i;
-    private Button mSignOut;
+    private Button mSignOut,mSetting;
     private FirebaseAuth mAuth;
     private String currentUid;
     private DatabaseReference usersDb;
@@ -46,6 +48,16 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSignOut = findViewById(R.id.btn_sign_out);
+        mSetting=findViewById(R.id.btn_setting);
+        mSetting.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, SettingActivity.class);
+                intent.putExtra("userSex",userSex);
+                startActivity(intent);
+                finish();
+            }
+        });
         mSignOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
