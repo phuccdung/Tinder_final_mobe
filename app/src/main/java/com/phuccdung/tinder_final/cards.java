@@ -3,6 +3,7 @@ package com.phuccdung.tinder_final;
 public class cards {
     String userId;
     String name;
+    String profileImageUrl;
 
     public String getUserId() {
         return userId;
@@ -20,8 +21,17 @@ public class cards {
         this.name = name;
     }
 
-    public cards(String userId, String name) {
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public cards(String userId, String name, String profileImageUrl) {
         this.userId = userId;
         this.name = name;
+        this.profileImageUrl = profileImageUrl;
     }
 }

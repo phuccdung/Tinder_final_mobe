@@ -11,6 +11,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
+
 import java.util.List;
 
 public class arrayAdapter extends ArrayAdapter<cards> {
@@ -29,7 +31,7 @@ public class arrayAdapter extends ArrayAdapter<cards> {
         TextView name =(TextView) convertView.findViewById(R.id.tv_name);
         ImageView image=(ImageView) convertView.findViewById(R.id.image);
         name.setText(card_item.getName());
-        image.setImageResource(R.mipmap.ic_launcher);
+        Glide.with(getContext()).load(card_item.getProfileImageUrl()).error(R.mipmap.ic_launcher).into(image);
         return  convertView;
     }
 }
