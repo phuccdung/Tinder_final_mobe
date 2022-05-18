@@ -55,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, SettingActivity.class);
                 intent.putExtra("userSex",userSex);
                 startActivity(intent);
-                finish();
+
             }
         });
         mSignOut.setOnClickListener(new View.OnClickListener() {

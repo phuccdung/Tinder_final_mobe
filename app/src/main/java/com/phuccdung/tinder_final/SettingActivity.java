@@ -162,33 +162,42 @@ public class SettingActivity extends AppCompatActivity {
         userInfo.put("name", name);
         userInfo.put("phone", phone);
         mProfileDatabase.updateChildren(userInfo);
-//        if (resultUri != null) {
-//            StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
-//            ByteArrayOutputStream baos = new ByteArrayOutputStream();
-//            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
-//            byte[] data = baos.toByteArray();
-//            UploadTask uploadTask = filePath.putBytes(data);
-//            uploadTask.addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    finish();
-//                }
-//            });
-//            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    String downloadUrl = taskSnapshot.getMetadata().getReference().getDownloadUrl().toString();
-//                    Map userInfo = new HashMap();
-//                    userInfo.put("profileImageUrl", downloadUrl);
-//                    mProfileDatabase.updateChildren(userInfo);
-//                    finish();
-//                    return;
-//
-//                }
-//            });
-//        } else {
-//            finish();
-//        }
+        if (resultUri != null) {
+            StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);
+            ByteArrayOutputStream baos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 20, baos);
+            byte[] data = baos.toByteArray();
+            UploadTask uploadTask = filePath.putBytes(data);
+            uploadTask.addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    finish();
+                }
+            });
+            uploadTask.addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    if(taskSnapshot.getMetadata()!=null){
+                        if(taskSnapshot.getMetadata().getReference()!=null){
+                            Task<Uri> result = taskSnapshot.getStorage().getDownloadUrl();
+                            result.addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                     String imageUrl = uri.toString();
+                                     userInfo.put("profileImageUrl",imageUrl);
+                                     mProfileDatabase.updateChildren(userInfo);
+                                    finish();
+
+                                }
+                            });
+                        }
+                    }
+
+                }
+            });
+        } else {
+            finish();
+        }
     }
 
     @Override
