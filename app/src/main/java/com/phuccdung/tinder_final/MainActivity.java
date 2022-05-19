@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,19 +21,20 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.lorentzos.flingswipe.SwipeFlingAdapterView;
+import com.phuccdung.tinder_final.Cards.arrayAdapter;
+import com.phuccdung.tinder_final.Cards.cards;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.zip.Deflater;
 
 public class MainActivity extends AppCompatActivity {
 
 
     public   static  final int MY_REQUEST_CODE=10;
     private cards cards_data[];
-    private arrayAdapter arrayAdapter;
-    private Button mSignOut,mSetting;
+    private com.phuccdung.tinder_final.Cards.arrayAdapter arrayAdapter;
+    private Button mSignOut,mSetting,mMatches;
     private FirebaseAuth mAuth;
     private String currentUid;
     private DatabaseReference usersDb;
@@ -50,6 +50,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mSignOut = findViewById(R.id.btn_sign_out);
         mSetting=findViewById(R.id.btn_setting);
+        mMatches=findViewById(R.id.btn_matches);
+        mMatches.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MainActivity.this, MatchesActivity.class);
+                startActivity(intent);
+            }
+        });
         mSetting.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -90,7 +98,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onLeftCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String userId = obj.userId;
+                String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("nope").child(currentUid).setValue(true);
                 Toast.makeText(MainActivity.this, "Left", Toast.LENGTH_SHORT).show();
             }
@@ -98,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onRightCardExit(Object dataObject) {
                 cards obj = (cards) dataObject;
-                String userId = obj.userId;
+                String userId = obj.getUserId();
                 usersDb.child(userId).child("connections").child("yeps").child(currentUid).setValue(true);
                 isConnectionMatch(userId);
                 Toast.makeText(MainActivity.this, "Right", Toast.LENGTH_SHORT).show();

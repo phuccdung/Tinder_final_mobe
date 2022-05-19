@@ -1,4 +1,4 @@
-package com.phuccdung.tinder_final;
+package com.phuccdung.tinder_final.Cards;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -12,6 +12,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.bumptech.glide.Glide;
+import com.phuccdung.tinder_final.Cards.cards;
+import com.phuccdung.tinder_final.R;
 
 import java.util.List;
 
