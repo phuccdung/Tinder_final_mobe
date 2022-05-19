@@ -23,6 +23,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -48,8 +49,9 @@ public class SettingActivity extends AppCompatActivity {
     private Button mBack, mConfirm;
     private ImageView mProImage;
     private FirebaseAuth mAuth;
+    private TextView mSex;
     private DatabaseReference mProfileDatabase;
-    private String userId, name, phone, proImage;
+    private String userId, name, phone, proImage,userSex;
     private Uri resultUri;
     private Bitmap bitmap;
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -79,9 +81,9 @@ public class SettingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_setting);
 
-        String userSex = getIntent().getExtras().getString("userSex");
         mName = (EditText) findViewById(R.id.pro_name);
         mPhone = (EditText) findViewById(R.id.pro_phone);
+        mSex=(TextView) findViewById(R.id.pro_sex);
 
         mProImage = (ImageView) findViewById(R.id.profile_image);
 
@@ -90,7 +92,7 @@ public class SettingActivity extends AppCompatActivity {
 
         mAuth = FirebaseAuth.getInstance();
         userId = mAuth.getCurrentUser().getUid();
-        mProfileDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userSex).child(userId);
+        mProfileDatabase = FirebaseDatabase.getInstance().getReference().child("Users").child(userId);
 
         getUserInfo();
         mProImage.setOnClickListener(new View.OnClickListener() {
@@ -139,6 +141,10 @@ public class SettingActivity extends AppCompatActivity {
                     if (map.get("phone") != null) {
                         phone = map.get("phone").toString();
                         mPhone.setText(phone);
+                    }
+                    if (map.get("sex") != null) {
+                        userSex=map.get("sex").toString();
+                        mSex.setText(userSex);
                     }
                     if (map.get("profileImageUrl") != null) {
                         proImage = map.get("profileImageUrl").toString();
