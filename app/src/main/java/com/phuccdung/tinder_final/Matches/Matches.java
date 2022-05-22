@@ -1,7 +1,7 @@
 package com.phuccdung.tinder_final.Matches;
 
 public class Matches {
-    private  String userId;
+    private  String userId,name,profileImageUrl;
 
     public String getUserId() {
         return userId;
@@ -11,7 +11,25 @@ public class Matches {
         this.userId = userId;
     }
 
-    public Matches(String userId) {
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
+    }
+
+    public Matches(String userId, String name, String profileImageUrl) {
         this.userId = userId;
+        this.name = name;
+        this.profileImageUrl = profileImageUrl;
     }
 }
