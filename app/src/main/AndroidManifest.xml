@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Tinder_final">
         <activity
+            android:name=".ChatActivity"
+            android:exported="false" />
+        <activity
             android:name=".MatchesActivity"
             android:exported="false" />
         <activity

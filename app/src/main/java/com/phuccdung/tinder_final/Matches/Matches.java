@@ -1,6 +1,8 @@
 package com.phuccdung.tinder_final.Matches;
 
-public class Matches {
+import java.io.Serializable;
+
+public class Matches implements Serializable {
     private  String userId,name,profileImageUrl;
 
     public String getUserId() {

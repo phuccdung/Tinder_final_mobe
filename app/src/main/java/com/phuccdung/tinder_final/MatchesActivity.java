@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -32,7 +33,16 @@ public class MatchesActivity extends AppCompatActivity {
         setContentView(R.layout.activity_matches);
         currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
         rcv = findViewById(R.id.rcv);
-        matchesAdapter = new MatchesAdapter(list,this);
+        matchesAdapter = new MatchesAdapter(list, this, new MatchesAdapter.IClickItemListener() {
+            @Override
+            public void onClickItem(String matchesId) {
+                Intent intent=new Intent(MatchesActivity.this,ChatActivity.class);
+                Bundle b=new Bundle();
+                b.putString("matchId",matchesId);
+                intent.putExtras(b)  ;
+                startActivity(intent);
+            }
+        });
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rcv.setLayoutManager(linearLayoutManager);
         getListMatches();
