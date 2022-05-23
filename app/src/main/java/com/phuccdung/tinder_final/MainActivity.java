@@ -31,10 +31,10 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
 
 
-    public   static  final int MY_REQUEST_CODE=10;
+    public static final int MY_REQUEST_CODE = 10;
     private cards cards_data[];
     private com.phuccdung.tinder_final.Cards.arrayAdapter arrayAdapter;
-    private Button mSignOut,mSetting,mMatches;
+    private Button mSignOut, mSetting, mMatches;
     private FirebaseAuth mAuth;
     private String currentUid;
     private DatabaseReference usersDb;
@@ -49,8 +49,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mSignOut = findViewById(R.id.btn_sign_out);
-        mSetting=findViewById(R.id.btn_setting);
-        mMatches=findViewById(R.id.btn_matches);
+        mSetting = findViewById(R.id.btn_setting);
+        mMatches = findViewById(R.id.btn_matches);
         mMatches.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -136,14 +136,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void isConnectionMatch(String userId) {
-        DatabaseReference currentUserConnectDb=usersDb.child(currentUid).child("connections").child("yeps").child(userId);
+        DatabaseReference currentUserConnectDb = usersDb.child(currentUid).child("connections").child("yeps").child(userId);
         currentUserConnectDb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()){
-                    Toast.makeText(MainActivity.this,"new connection",Toast.LENGTH_SHORT).show();
-                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUid).setValue(true);
-                    usersDb.child(currentUid).child("connections").child("matches").child(snapshot.getKey()).setValue(true);
+                if (snapshot.exists()) {
+                    Toast.makeText(MainActivity.this, "new connection", Toast.LENGTH_SHORT).show();
+                    String key=FirebaseDatabase.getInstance().getReference().child("chat").push().getKey();
+
+                    usersDb.child(snapshot.getKey()).child("connections").child("matches").child(currentUid).child("chatId").setValue(key);
+
+                    usersDb.child(currentUid).child("connections").child("matches").child(snapshot.getKey()).child("chatId").setValue(key);
 
                 }
             }
@@ -161,8 +164,8 @@ public class MainActivity extends AppCompatActivity {
         oppositeSexDb.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                if (snapshot.exists()&& snapshot.child("sex").getValue().toString().equals(oppositeUserSex) && !snapshot.child("connections").child("nope").hasChild(currentUid) && !snapshot.child("connections").child("yeps").hasChild(currentUid)) {
-                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(),snapshot.child("profileImageUrl").getValue().toString());
+                if (snapshot.exists() && snapshot.child("sex").getValue().toString().equals(oppositeUserSex) && !snapshot.child("connections").child("nope").hasChild(currentUid) && !snapshot.child("connections").child("yeps").hasChild(currentUid)) {
+                    cards item = new cards(snapshot.getKey(), snapshot.child("name").getValue().toString(), snapshot.child("profileImageUrl").getValue().toString());
                     rowItems.add(item);
                     arrayAdapter.notifyDataSetChanged();
                 }
@@ -200,12 +203,12 @@ public class MainActivity extends AppCompatActivity {
                     Map<String, Object> map = (Map<String, Object>) snapshot.getValue();
                     userSex = map.get("sex").toString();
 
-                    switch (userSex){
-                        case "Male":{
+                    switch (userSex) {
+                        case "Male": {
                             oppositeUserSex = "Female";
                             break;
                         }
-                        case "Female":{
+                        case "Female": {
                             oppositeUserSex = "Male";
                         }
                     }
