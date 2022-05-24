@@ -4,6 +4,7 @@ public class cards {
     String userId;
     String name;
     String profileImageUrl;
+    String about;
 
     public String getUserId() {
         return userId;
@@ -29,9 +30,18 @@ public class cards {
         this.profileImageUrl = profileImageUrl;
     }
 
-    public cards(String userId, String name, String profileImageUrl) {
+    public String getAbout() {
+        return about;
+    }
+
+    public void setAbout(String about) {
+        this.about = about;
+    }
+
+    public cards(String userId, String name, String profileImageUrl, String about) {
         this.userId = userId;
         this.name = name;
         this.profileImageUrl = profileImageUrl;
+        this.about = about;
     }
 }

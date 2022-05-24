@@ -45,13 +45,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SettingActivity extends AppCompatActivity {
-    private EditText mName, mPhone;
+    private EditText mName, mPhone,mAbout;
     private Button mBack, mConfirm;
     private ImageView mProImage;
     private FirebaseAuth mAuth;
     private TextView mSex;
     private DatabaseReference mProfileDatabase;
-    private String userId, name, phone, proImage,userSex;
+    private String userId, name, phone, proImage,userSex,about;
     private Uri resultUri;
     private Bitmap bitmap;
     private ActivityResultLauncher<Intent> mActivityResultLauncher = registerForActivityResult(
@@ -84,6 +84,7 @@ public class SettingActivity extends AppCompatActivity {
         mName = (EditText) findViewById(R.id.pro_name);
         mPhone = (EditText) findViewById(R.id.pro_phone);
         mSex=(TextView) findViewById(R.id.pro_sex);
+        mAbout=(EditText) findViewById(R.id.pro_about);
 
         mProImage = (ImageView) findViewById(R.id.profile_image);
 
@@ -146,6 +147,10 @@ public class SettingActivity extends AppCompatActivity {
                         userSex=map.get("sex").toString();
                         mSex.setText(userSex);
                     }
+                    if (map.get("about") != null) {
+                        about=map.get("about").toString();
+                        mAbout.setText(about);
+                    }
                     if (map.get("profileImageUrl") != null) {
                         proImage = map.get("profileImageUrl").toString();
                         Glide.with(getApplication()).load(proImage).error(R.mipmap.ic_launcher).into(mProImage);
@@ -163,10 +168,14 @@ public class SettingActivity extends AppCompatActivity {
     private void saveUserInfo() {
         name = mName.getText().toString().trim();
         phone = mPhone.getText().toString().trim();
+        about = mAbout.getText().toString().trim();
+
 
         Map userInfo = new HashMap();
         userInfo.put("name", name);
         userInfo.put("phone", phone);
+        userInfo.put("about", about);
+
         mProfileDatabase.updateChildren(userInfo);
         if (resultUri != null) {
             StorageReference filePath = FirebaseStorage.getInstance().getReference().child("profileImages").child(userId);

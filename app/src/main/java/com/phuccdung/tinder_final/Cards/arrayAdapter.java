@@ -32,7 +32,9 @@ public class arrayAdapter extends ArrayAdapter<cards> {
         }
         TextView name =(TextView) convertView.findViewById(R.id.tv_name);
         ImageView image=(ImageView) convertView.findViewById(R.id.image);
+        TextView about=(TextView) convertView.findViewById(R.id.tv_about);
         name.setText(card_item.getName());
+        about.setText(card_item.getAbout());
         Glide.with(getContext()).load(card_item.getProfileImageUrl()).error(R.mipmap.ic_launcher).into(image);
         return  convertView;
     }

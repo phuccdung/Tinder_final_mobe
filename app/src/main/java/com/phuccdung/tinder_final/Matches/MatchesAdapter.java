@@ -44,7 +44,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
     @Override
     public void onBindViewHolder(@NonNull MatchesViewHolder holder, int position) {
         Matches matches = matchesList.get(position);
-        holder.matches_id.setText(matches.getUserId());
+
         holder.matches_name.setText(matches.getName());
         Glide.with(context).load(matches.getProfileImageUrl()).error(R.mipmap.ic_launcher).into(holder.matches_image);
         holder.matches_image.setOnClickListener(new View.OnClickListener() {
@@ -69,7 +69,7 @@ public class MatchesAdapter extends RecyclerView.Adapter<MatchesAdapter.MatchesV
 
         public MatchesViewHolder(@NonNull View itemView) {
             super(itemView);
-            matches_id = itemView.findViewById(R.id.match_id);
+
             matches_name = itemView.findViewById(R.id.match_name);
             matches_image = itemView.findViewById(R.id.matchesImage);
         }
